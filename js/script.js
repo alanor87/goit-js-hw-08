@@ -24,10 +24,12 @@ function lightboxOpenHandler(event) {
     if (event.target.nodeName !== 'IMG') return;
     const imgSource = event.target.dataset.source;
     const imgIndex = event.target.dataset.index;
+    const imgAlt = event.target.alt;
     event.preventDefault();
     modalRef.classList.add('is-open');
     lightboxImgRef.src = imgSource;
     lightboxImgRef.dataset.index = imgIndex;
+    lightboxImgRef.alt = imgAlt;
     window.addEventListener('keydown', lightboxKeypressHandler);
 }
 
