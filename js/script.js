@@ -50,6 +50,7 @@ function arrowClickHandler(indexShift) {
         const nextImg = galleryParentRef.querySelector(`img[data-index="${nextImgIndex}"]`);
         lightboxImgRef.src = nextImg.dataset.source;
         lightboxImgRef.dataset.index = nextImgIndex;
+        lightboxImgRef.alt = nextImg.alt;
     }
 }
 
