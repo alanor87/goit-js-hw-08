@@ -1,9 +1,11 @@
 import images from "./gallery-items.js";
 
+let imgIndex;
 const galleryParentRef = document.querySelector('.js-gallery');
 const modalRef = document.querySelector('.lightbox');
 const modalCloseBtnRef = modalRef.querySelector('button[data-action="close-lightbox"]');
 const lightboxImgRef = document.querySelector('.lightbox__image');
+const lightboxOverlayRef = document.querySelector('.lightbox__overlay');
 
 function renderGalleryHandler(images) {
     const imagesArray = images.map((element, index) => {
@@ -23,8 +25,8 @@ function renderGalleryHandler(images) {
 function lightboxOpenHandler(event) {
     if (event.target.nodeName !== 'IMG') return;
     const imgSource = event.target.dataset.source;
-    const imgIndex = event.target.dataset.index;
     const imgAlt = event.target.alt;
+    imgIndex = Number(event.target.dataset.index);
     event.preventDefault();
     modalRef.classList.add('is-open');
     lightboxImgRef.src = imgSource;
@@ -33,24 +35,23 @@ function lightboxOpenHandler(event) {
     window.addEventListener('keydown', lightboxKeypressHandler);
 }
 
-function lightboxCloseHandler() {
+function lightboxCloseHandler(event) {
+    console.log(event.target);
+    console.log(event.currentTarget);
+    if (event.target !== event.currentTarget) return;
     window.removeEventListener('keydown', lightboxKeypressHandler);
     modalRef.classList.remove('is-open');
     lightboxImgRef.src = '';
 }
 
-function lightboxImageHandler(event) {
-    event.stopImmediatePropagation();
-}
-
 function arrowClickHandler(indexShift) {
-    const currentImgIndex = Number(lightboxImgRef.dataset.index);
-    const nextImgIndex = currentImgIndex + indexShift;
-    if (nextImgIndex !== -1 && nextImgIndex < galleryParentRef.children.length) {
-        const nextImg = galleryParentRef.querySelector(`img[data-index="${nextImgIndex}"]`);
-        lightboxImgRef.src = nextImg.dataset.source;
-        lightboxImgRef.dataset.index = nextImgIndex;
-        lightboxImgRef.alt = nextImg.alt;
+    const nextImgIndex = imgIndex + indexShift;
+    console.log(nextImgIndex);
+    if (nextImgIndex !== -1 && nextImgIndex < images.length) {
+        const nextImg = images[nextImgIndex];
+        lightboxImgRef.src = nextImg.original;
+        lightboxImgRef.alt = nextImg.description;
+        imgIndex = nextImgIndex;
     }
 }
 
@@ -73,6 +74,5 @@ function lightboxKeypressHandler(event) {
 
 renderGalleryHandler(images);
 galleryParentRef.addEventListener('click', lightboxOpenHandler);
-modalRef.addEventListener('click', lightboxCloseHandler);
+lightboxOverlayRef.addEventListener('click', lightboxCloseHandler);
 modalCloseBtnRef.addEventListener('click', lightboxCloseHandler); // уже не нужно, т.к. есть закрытие по клику на модальное окно?
-lightboxImgRef.addEventListener('click', lightboxImageHandler);  // закрываем только по клику на оверлей, но не на саму картинку?
