@@ -18,7 +18,7 @@ function renderGalleryHandler(images) {
             />
         </a>
     </li>`
-    }); //data-index для навигации стрелками
+    });
     galleryParentRef.insertAdjacentHTML('beforeend', imagesArray.join(''));
 }
 
@@ -36,8 +36,6 @@ function lightboxOpenHandler(event) {
 }
 
 function lightboxCloseHandler(event) {
-    console.log(event.target);
-    console.log(event.currentTarget);
     if (event.target !== event.currentTarget) return;
     window.removeEventListener('keydown', lightboxKeypressHandler);
     modalRef.classList.remove('is-open');
@@ -75,4 +73,4 @@ function lightboxKeypressHandler(event) {
 renderGalleryHandler(images);
 galleryParentRef.addEventListener('click', lightboxOpenHandler);
 lightboxOverlayRef.addEventListener('click', lightboxCloseHandler);
-modalCloseBtnRef.addEventListener('click', lightboxCloseHandler); // уже не нужно, т.к. есть закрытие по клику на модальное окно?
+modalCloseBtnRef.addEventListener('click', lightboxCloseHandler); 
