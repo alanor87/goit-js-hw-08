@@ -35,8 +35,11 @@ function lightboxOpenHandler(event) {
     window.addEventListener('keydown', lightboxKeypressHandler);
 }
 
-function lightboxCloseHandler(event) {
+function lightBoxClickCheck(event) {
     if (event.target !== event.currentTarget) return;
+    lightboxCloseHandler();
+}
+function lightboxCloseHandler() {
     window.removeEventListener('keydown', lightboxKeypressHandler);
     modalRef.classList.remove('is-open');
     lightboxImgRef.src = '';
@@ -72,5 +75,5 @@ function lightboxKeypressHandler(event) {
 
 renderGalleryHandler(images);
 galleryParentRef.addEventListener('click', lightboxOpenHandler);
-lightboxOverlayRef.addEventListener('click', lightboxCloseHandler);
+lightboxOverlayRef.addEventListener('click', lightBoxClickCheck);
 modalCloseBtnRef.addEventListener('click', lightboxCloseHandler); 
